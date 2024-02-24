@@ -198,6 +198,7 @@
 /gnulib-m4/uchar_h.m4
 /gnulib-m4/unicase_h.m4
 /gnulib-m4/unictype_h.m4
+/gnulib-m4/unimetadata_h.m4
 /gnulib-m4/uninorm_h.m4
 /gnulib-m4/unistd_h.m4
 /gnulib-m4/usleep.m4
@@ -300,6 +301,7 @@
 /lib/locale.in.h
 /lib/localename-table.c
 /lib/localename-table.h
+/lib/localename-unsafe.c
 /lib/localename.c
 /lib/localename.h
 /lib/malloc.c
@@ -339,6 +341,7 @@
 /lib/relocatable.h
 /lib/relocatable.valgrind
 /lib/setlocale-lock.c
+/lib/setlocale_null-unlocked.c
 /lib/setlocale_null.c
 /lib/setlocale_null.h
 /lib/signbitd.c
@@ -361,6 +364,7 @@
 /lib/string.in.h
 /lib/strncat.c
 /lib/strstr.c
+/lib/struniq.h
 /lib/sys_types.in.h
 /lib/thread-optim.h
 /lib/uchar.in.h
@@ -369,6 +373,7 @@
 /lib/unictype.in.h
 /lib/unigbrk.in.h
 /lib/unilbrk.in.h
+/lib/unimetadata.in.h
 /lib/uniname.in.h
 /lib/uninorm.in.h
 /lib/unistd.c
@@ -914,6 +919,7 @@
 /lib/unilbrk/ulc-common.h
 /lib/unilbrk/ulc-possible-linebreaks.c
 /lib/unilbrk/ulc-width-linebreaks.c
+/lib/unimetadata/u-version.c
 /lib/uniname/gen-uninames.lisp
 /lib/uniname/uniname.c
 /lib/uniname/uninames.h
@@ -1527,6 +1533,7 @@
 /tests/test-setlocale2.sh
 /tests/test-setlocale_null-mt-all.c
 /tests/test-setlocale_null-mt-one.c
+/tests/test-setlocale_null-unlocked.c
 /tests/test-setlocale_null.c
 /tests/test-setsockopt.c
 /tests/test-sigaction.c
@@ -1902,6 +1909,7 @@
 /tests/unilbrk/test-u8-width-linebreaks.c
 /tests/unilbrk/test-ulc-possible-linebreaks.c
 /tests/unilbrk/test-ulc-width-linebreaks.c
+/tests/unimetadata/test-u-version.c
 /tests/uniname/HangulSyllableNames.txt
 /tests/uniname/NameAliases.txt
 /tests/uniname/UnicodeData.txt
@@ -2898,6 +2906,8 @@ autom4te.cache/
 /tests/test-setlocale_null-mt-all.exe
 /tests/test-setlocale_null-mt-one
 /tests/test-setlocale_null-mt-one.exe
+/tests/test-setlocale_null-unlocked
+/tests/test-setlocale_null-unlocked.exe
 /tests/test-setsockopt
 /tests/test-setsockopt.exe
 /tests/test-sigaction
@@ -2976,6 +2986,8 @@ autom4te.cache/
 /tests/test-time.exe
 /tests/test-time-h
 /tests/test-time-h.exe
+/tests/test-u-version
+/tests/test-u-version.exe
 /tests/test-u16-asnprintf1
 /tests/test-u16-asnprintf1.exe
 /tests/test-u16-casecmp
@@ -3531,6 +3543,8 @@ core
 /lib/unigbrk.h-t
 /lib/unilbrk.h
 /lib/unilbrk.h-t
+/lib/unimetadata.h
+/lib/unimetadata.h-t
 /lib/uniname.h
 /lib/uniname.h-t
 /lib/uninorm.h
