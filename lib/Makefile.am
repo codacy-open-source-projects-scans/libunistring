@@ -1,5 +1,5 @@
 ## Makefile for the lib subdirectory of GNU libunistring.
-## Copyright (C) 2009-2024 Free Software Foundation, Inc.
+## Copyright (C) 2009-2025 Free Software Foundation, Inc.
 ##
 ## This program is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -73,6 +73,9 @@ unistring/stdint.h : $(STDINT_H) stdint.mini.h
 	rm -f $@-t $@
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
 	  echo '#include <stddef.h>'; \
+	  echo '#if __cplusplus >= 201103'; \
+	  echo '#include <cstdint>'; \
+	  echo '#else'; \
 	  echo '#if __GLIBC__ >= 2'; \
 	  echo '#include <stdint.h>'; \
 	  echo '#else'; \
@@ -102,6 +105,7 @@ unistring/stdint.h : $(STDINT_H) stdint.mini.h
 	      -e 's/@''HAVE_SYS_INTTYPES_H''@/'"$$HAVE_SYS_INTTYPES_H"'/g' \
 	      -e 's/@''HAVE_SYS_BITYPES_H''@/0/g' \
 	      < $(srcdir)/stdint.mini.h; \
+	  echo '#endif'; \
 	  echo '#endif'; \
 	} > $@-t
 	mv $@-t $@
@@ -239,7 +243,9 @@ EXTRA_DIST           += libunistring.sym declared.sh
 # Tell the mingw or Cygwin linker which symbols to export.
 if WOE32DLL
 libunistring_la_SOURCES += ../woe32dll/unistring-exports.c
+if !PLATFORM_IS_MSVC
 libunistring_la_LDFLAGS += -Wl,--export-all-symbols
+endif
 endif
 
 # Hide undesired symbols that are defined by libunistring_la_SOURCES or
@@ -265,9 +271,9 @@ config.h: $(BUILT_SOURCES) $(srcdir)/libunistring.sym
 	        case $$f in \
 	          *.res.lo ) ;; \
 	          *.c | *.$(OBJEXT) | *.lo ) \
-	            sf=`echo "$$f" | sed -e 's,\\.[^.]*$$,,'`.c; \
+	            sf=`echo "$$f" | sed -e 's,^libunistring_la-,,' -e 's,\\.[^.]*$$,,'`.c; \
 	            test -f $$sf || sf=$(srcdir)/$$sf; \
-	            of=`echo "$$f" | sed -e 's,^.*/,,' -e 's,\\.[^.]*$$,,'`.$(OBJEXT); \
+	            of=`echo "$$f" | sed -e 's,^.*/,,' -e 's,^libunistring_la-,,' -e 's,\\.[^.]*$$,,'`.$(OBJEXT); \
 	            echo "$(COMPILE) -c $$sf" 1>&6; \
 	            $(COMPILE) -c $$sf || { rm -f config.h; exit 1; }; \
 	            sh ./exported.sh $$of 1>&5; \
@@ -311,7 +317,7 @@ AM_CPPFLAGS += -DDEPENDS_ON_LIBICONV=1
 # Libtool's library version information for libunistring.
 # See the libtool documentation, section "Library interface versions".
 LTV_CURRENT=7
-LTV_REVISION=0
+LTV_REVISION=1
 LTV_AGE=2
 
 # How to build libunistring.la.

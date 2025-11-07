@@ -1,4 +1,4 @@
-# Copyright (C) 2002-2024 Free Software Foundation, Inc.
+# Copyright (C) 2002-2025 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -41,8 +41,11 @@
 #  --no-conditional-dependencies \
 #  --libtool \
 #  --macro-prefix=gl \
+#  --avoid=float-h-tests \
 #  gitlog-to-changelog \
+#  package-version \
 #  relocatable-lib-lgpl \
+#  test-xfail \
 #  unicase/base \
 #  unicase/empty-prefix-context \
 #  unicase/empty-suffix-context \
@@ -390,7 +393,7 @@
 #  unistr/u8-to-u16 \
 #  unistr/u8-to-u32 \
 #  unistr/u8-uctomb \
-#  unitypes \
+#  unitypes-h \
 #  uniwbrk/base \
 #  uniwbrk/u16-wordbreaks \
 #  uniwbrk/u32-wordbreaks \
@@ -410,7 +413,9 @@
 gl_LOCAL_DIR([gnulib-local])
 gl_MODULES([
   gitlog-to-changelog
+  package-version
   relocatable-lib-lgpl
+  test-xfail
   unicase/base
   unicase/empty-prefix-context
   unicase/empty-suffix-context
@@ -758,7 +763,7 @@ gl_MODULES([
   unistr/u8-to-u16
   unistr/u8-to-u32
   unistr/u8-uctomb
-  unitypes
+  unitypes-h
   uniwbrk/base
   uniwbrk/u16-wordbreaks
   uniwbrk/u32-wordbreaks
@@ -774,7 +779,7 @@ gl_MODULES([
   uniwidth/u8-width
   uniwidth/width
 ])
-gl_AVOID([])
+gl_AVOID([float-h-tests])
 gl_SOURCE_BASE([lib])
 gl_M4_BASE([gnulib-m4])
 gl_PO_BASE([])

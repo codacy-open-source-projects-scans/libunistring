@@ -68,16 +68,17 @@ the behavior of the module changes.  Thus, if you regenerate the
 Gnulib source files for the latest Unicode release, you will also need
 to bump the version of affected modules.
 
-To identify affected modules, you can use the following command:
-
-  $ (cd $GNULIB_SRCDIR && git show --oneline --name-only $COMMIT | tail -n+2) \
-    | ./containing | LC_ALL=C sort -u \
-    | ./dependent | LC_ALL=C sort -u
-
-where $COMMIT is a git commit ID, which points to the regeneration,
-and 'containing' and 'dependent' are scripts included here.  Note that
-this command takes some time to complete.  Also, it is useful to
-temporarily remove the dependency to 'wcwidth' from modules/mbchar
-before this command.
+To identify affected modules, you can use the following steps:
+1. Identify the modified files.
+   $ git diff HEAD~1 lib
+   and ignore the files that have only comment changes.
+2. Identify the modified modules.
+   $ modules=`./gnulib-tool --find lib/FILE1 lib/FILE2 ... | sort -u`
+3. Identify the modules with a gl_LIBUNISTRING_MODULE invocation.
+   $ modules=`./gnulib-tool --extract-recursive-dependents $modules \
+              | grep -v tests | sort -u`
+   $ cd modules
+   $ modules=`grep -l gl_LIBUNISTRING_MODULE $modules`
+4. Edit the gl_LIBUNISTRING_MODULE invocation in each of these modules.
 
 Daiki Ueno <ueno@gnu.org>

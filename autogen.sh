@@ -4,11 +4,11 @@
 # also regenerates all aclocal.m4, config.h.in, Makefile.in, configure files
 # with new versions of autoconf or automake.
 #
-# This script requires autoconf-2.65..2.72 and automake-1.16.4..1.17 in the PATH.
+# This script requires autoconf-2.65..2.72 and automake-1.16.4..1.18 in the PATH.
 # It also requires
 #   - the gperf program.
 
-# Copyright (C) 2003-2024 Free Software Foundation, Inc.
+# Copyright (C) 2003-2025 Free Software Foundation, Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -81,7 +81,9 @@ if test $skip_gnulib = false; then
   }
   GNULIB_MODULES='
     gitlog-to-changelog
-    unitypes
+    package-version
+    test-xfail
+    unitypes-h
     unistr/base
     unistr/u8-check
     unistr/u8-chr
@@ -447,7 +449,8 @@ if test $skip_gnulib = false; then
   '
   $GNULIB_TOOL --lib=libunistring --source-base=lib --m4-base=gnulib-m4 --tests-base=tests \
     --with-tests --lgpl=3orGPLv2 --makefile-name=Makefile.gnulib --libtool --local-dir=gnulib-local \
-    --import $GNULIB_MODULES
+    --avoid=float-h-tests \
+    --import $GNULIB_MODULES || exit $?
   # Change lib/unistr.h to be usable standalone.
   sed -e 's/if GNULIB_[A-Za-z0-9_]* || .*/if 1/g' \
       -e 's/if GNULIB_[A-Za-z0-9_]*/if 1/g' \
@@ -455,26 +458,29 @@ if test $skip_gnulib = false; then
       < lib/unistr.in.h \
       > lib/unistr.in.h.tmp \
   && mv lib/unistr.in.h.tmp lib/unistr.in.h
-  $GNULIB_TOOL --copy-file build-aux/ar-lib; chmod a+x build-aux/ar-lib
-  $GNULIB_TOOL --copy-file build-aux/config.guess; chmod a+x build-aux/config.guess
-  $GNULIB_TOOL --copy-file build-aux/config.sub;   chmod a+x build-aux/config.sub
-  $GNULIB_TOOL --copy-file build-aux/declared.sh lib/declared.sh; chmod a+x lib/declared.sh
-  $GNULIB_TOOL --copy-file build-aux/run-test; chmod a+x build-aux/run-test
-  $GNULIB_TOOL --copy-file build-aux/test-driver.diff
+  $GNULIB_TOOL --copy-file build-aux/ar-lib && chmod a+x build-aux/ar-lib || exit $?
+  $GNULIB_TOOL --copy-file build-aux/config.guess && chmod a+x build-aux/config.guess || exit $?
+  $GNULIB_TOOL --copy-file build-aux/config.sub && chmod a+x build-aux/config.sub || exit $?
+  $GNULIB_TOOL --copy-file build-aux/declared.sh lib/declared.sh && chmod a+x lib/declared.sh || exit $?
+  $GNULIB_TOOL --copy-file build-aux/run-test && chmod a+x build-aux/run-test || exit $?
+  $GNULIB_TOOL --copy-file build-aux/test-driver.diff || exit $?
   # If we got no texinfo.tex so far, take the snapshot from gnulib.
   if test ! -f build-aux/texinfo.tex; then
-    $GNULIB_TOOL --copy-file build-aux/texinfo.tex
+    $GNULIB_TOOL --copy-file build-aux/texinfo.tex || exit $?
   fi
+  # Fetch INSTALL.generic.
+  $GNULIB_TOOL --copy-file doc/INSTALL.UTF-8 INSTALL.generic || exit $?
 fi
 
-aclocal -I m4 -I gnulib-m4
-autoconf
-autoheader && touch config.h.in
 # Make sure we get new versions of files brought in by automake.
 (cd build-aux && rm -f ar-lib compile depcomp install-sh mdate-sh missing test-driver)
-automake --add-missing --copy
-patch build-aux/test-driver < build-aux/test-driver.diff
-# Get rid of autom4te.cache directory.
-rm -rf autom4te.cache
+
+aclocal -I m4 -I gnulib-m4 \
+  && autoconf \
+  && autoheader && touch config.h.in \
+  && automake --add-missing --copy \
+  && { patch build-aux/test-driver < build-aux/test-driver.diff || : ; } \
+  && rm -rf autom4te.cache \
+  || exit $?
 
 echo "$0: done.  Now you can run './configure'."

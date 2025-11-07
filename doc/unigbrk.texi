@@ -38,9 +38,9 @@ clusters.
 The following functions find a single boundary between grapheme
 clusters in a string.
 
-@deftypefun void u8_grapheme_next (const@tie{}uint8_t@tie{}*@var{s}, const@tie{}uint8_t@tie{}*@var{end})
-@deftypefunx void u16_grapheme_next (const@tie{}uint16_t@tie{}*@var{s}, const@tie{}uint16_t@tie{}*@var{end})
-@deftypefunx void u32_grapheme_next (const@tie{}uint32_t@tie{}*@var{s}, const@tie{}uint32_t@tie{}*@var{end})
+@deftypefun {const uint8_t *} u8_grapheme_next (const@tie{}uint8_t@tie{}*@var{s}, const@tie{}uint8_t@tie{}*@var{end})
+@deftypefunx {const uint16_t *} u16_grapheme_next (const@tie{}uint16_t@tie{}*@var{s}, const@tie{}uint16_t@tie{}*@var{end})
+@deftypefunx {const uint32_t *} u32_grapheme_next (const@tie{}uint32_t@tie{}*@var{s}, const@tie{}uint32_t@tie{}*@var{end})
 Returns the start of the next grapheme cluster following @var{s},
 or @var{end} if no grapheme cluster break is encountered before it.
 Returns NULL if and only if @code{@var{s} == @var{end}}.
@@ -52,9 +52,9 @@ This is the case in particular with syllables in Indic scripts or emojis.
 Use @func{_grapheme_breaks} functions for such cases.
 @end deftypefun
 
-@deftypefun void u8_grapheme_prev (const@tie{}uint8_t@tie{}*@var{s}, const@tie{}uint8_t@tie{}*@var{start})
-@deftypefunx void u16_grapheme_prev (const@tie{}uint16_t@tie{}*@var{s}, const@tie{}uint16_t@tie{}*@var{start})
-@deftypefunx void u32_grapheme_prev (const@tie{}uint32_t@tie{}*@var{s}, const@tie{}uint32_t@tie{}*@var{start})
+@deftypefun {const uint8_t *} u8_grapheme_prev (const@tie{}uint8_t@tie{}*@var{s}, const@tie{}uint8_t@tie{}*@var{start})
+@deftypefunx {const uint16_t *} u16_grapheme_prev (const@tie{}uint16_t@tie{}*@var{s}, const@tie{}uint16_t@tie{}*@var{start})
+@deftypefunx {const uint32_t *} u32_grapheme_prev (const@tie{}uint32_t@tie{}*@var{s}, const@tie{}uint32_t@tie{}*@var{start})
 Returns the start of the grapheme cluster preceding @var{s}, or
 @var{start} if no grapheme cluster break is encountered before it.
 Returns NULL if and only if @code{@var{s} == @var{start}}.
